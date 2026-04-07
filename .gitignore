@@ -1,0 +1,12 @@
+# Python cache
+__pycache__/
+
+# Virtual Environment
+chatenv/
+
+# Chroma DB databases
+chroma_db_*/
+
+# Other common Python files to ignore
+.env
+*.pyc

@@ -1,0 +1,31 @@
+# 1. Define the Input Flow
+define flow my custom input check
+  # Execute the new action name
+  $allowed = execute my_custom_string_check_action
+  
+  if $allowed == "unsafe and should be flagged"
+    bot refuse to respond
+    stop
+  else if $allowed == "safe but should be flagged"
+    bot flagged response
+    stop
+  else if $allowed == "safe and should not be flagged"
+    bot normal response
+    stop
+
+# 2. Define the Output Flow (remains unchanged, using defaults)
+define flow self check output
+  $allowed = execute self_check_output
+  if not $allowed
+    bot refuse to respond
+    stop
+
+# 3. Define the "Refusal" Messages
+define bot refuse to respond
+  "[[GUARDRAIL_BLOCK_TRIGGERED]]"
+
+define bot flagged response
+  "[[GUARDRAIL_FLAGGING]]"
+  
+define bot normal response
+  "[[GUARDRAIL_NORMAL]]"

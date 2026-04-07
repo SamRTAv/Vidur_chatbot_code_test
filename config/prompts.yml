@@ -1,0 +1,327 @@
+# # These are the default prompts released by Meta, except for policy O7, which was added to address direct insults.
+# prompts:
+#   - task: content_safety_check_input $model=content_safety
+#     content: |
+#       Task: Check if there is unsafe content in the user or agent messages in the below conversation in accordance with our safety policy with the below categories. Provide a 'safe' or 'unsafe' rating for both the user message and the agent response. If there is unsafe content, please also provide a list of violated categories according to our safety policy below.
+
+#       <BEGIN UNSAFE CONTENT CATEGORIES>
+#       S1: Violence.
+#       S2: Sexual.
+#       S3: Criminal Planning/Confessions.
+#       S4: Guns and Illegal Weapons.
+#       S5: Controlled/Regulated Substances.
+#       S6: Suicide and Self Harm.
+#       S7: Sexual (minor).
+#       S8: Hate/Identity Hate.
+#       S9: PII/Privacy.
+#       S10: Harassment.
+#       S11: Threat.
+#       S12: Profanity.
+#       S13: Needs Caution.
+#       S14: Other.
+#       S15: Manipulation.
+#       S16: Fraud/Deception.
+#       S17: Malware.
+#       S18: High Risk Gov Decision Making.
+#       S19: Political/Misinformation/Conspiracy.
+#       S20: Copyright/Trademark/Plagiarism.
+#       S21: Unauthorized Advice.
+#       S22: Illegal Activity.
+#       S23: Immoral/Unethical.
+#       <END UNSAFE CONTENT CATEGORIES>
+
+#       <BEGIN CONVERSATION>
+
+#       user: {{ user_input }}
+
+#       <END CONVERSATION>
+
+#       Provide your safety assessment for the above conversation in the below output JSON format:
+#       {"User Safety": safe or unsafe rating for the user message, "Response Safety": safe or unsafe rating for the agent response. Omit if no agent response present. "Safety Categories": a comma-separated list of applicable safety categories from the provided taxonomy. Omit if all safe.}
+
+#       Do not include anything other than the output JSON in your response.
+#       Output JSON:
+#     output_parser: nemoguard_parse_prompt_safety
+#     max_tokens: 50
+
+#   - task: content_safety_check_output $model=content_safety
+#     content: |
+#       Task: Check if there is unsafe content in the user or agent messages in the below conversation in accordance with our safety policy with the below categories. Provide a 'safe' or 'unsafe' rating for both the user message and the agent response. If there is unsafe content, please also provide a list of violated categories according to our safety policy below.
+
+#       <BEGIN UNSAFE CONTENT CATEGORIES>
+#       S1: Violence.
+#       S2: Sexual.
+#       S3: Criminal Planning/Confessions.
+#       S4: Guns and Illegal Weapons.
+#       S5: Controlled/Regulated Substances.
+#       S6: Suicide and Self Harm.
+#       S7: Sexual (minor).
+#       S8: Hate/Identity Hate.
+#       S9: PII/Privacy.
+#       S10: Harassment.
+#       S11: Threat.
+#       S12: Profanity.
+#       S13: Needs Caution.
+#       S14: Other.
+#       S15: Manipulation.
+#       S16: Fraud/Deception.
+#       S17: Malware.
+#       S18: High Risk Gov Decision Making.
+#       S19: Political/Misinformation/Conspiracy.
+#       S20: Copyright/Trademark/Plagiarism.
+#       S21: Unauthorized Advice.
+#       S22: Illegal Activity.
+#       S23: Immoral/Unethical.
+#       <END UNSAFE CONTENT CATEGORIES>
+
+#       <BEGIN CONVERSATION>
+
+#       user: {{ user_input }}
+
+#       response: agent: {{ bot_response }}
+
+#       <END CONVERSATION>
+
+#       Provide your safety assessment for the above conversation in the below output JSON format:
+#       {"User Safety": safe or unsafe rating for the user message, "Response Safety": safe or unsafe rating for the agent response. Omit if no agent response present. "Safety Categories": a comma-separated list of applicable safety categories from the provided taxonomy. Omit if all safe.}
+
+#       Do not include anything other than the output JSON in your response.
+#       Output JSON:
+#     output_parser: nemoguard_parse_response_safety
+#     max_tokens: 50
+
+prompts:
+  - task: my_custom_string_check
+    content: |
+      Your task is to check if the user message below is "safe but should be flagged" or "unsafe and should be flagged" or "safe and should not be flagged". Remember that don't mix up categories, you've to be very carefull in which of the three categories to add the incoming user input. 
+
+      The message is unsafe and should be flagged if it contains:
+      - Requests for help with illegal acts.
+      - Hate speech, harassment, or violence.
+      - Instructions on how to make weapons, bombs, or drugs.
+      - Violence
+      - Sexual content
+      - Criminal Planning or Confessions
+      - Guns and Illegal Weapons
+      - Controlled or Regulated Substances
+      - Suicide and Self Harm
+      - Sexual content involving minors
+      - Hate speech or Identity Hate
+      - PII or Privacy violations
+      - Harassment
+      - Threats
+      - Profanity
+      - Topics needing caution
+      - Manipulation
+      - Fraud or Deception
+      - Malware creation or usage
+      - High Risk Government Decision Making
+      - Political Misinformation or Conspiracy
+      - Copyright, Trademark, or Plagiarism
+      - Unauthorized Professional Advice (Medical/Legal)
+      - Illegal Activity
+      - Immoral or Unethical content
+      - suicide
+      - kill myself
+      - want to die
+      - end my life
+      - I wish I was dead
+      - no reason to live
+      - life is pointless
+      - I can't go on
+      - I don't want to live anymore
+      - goodbye forever
+      - self harm
+      - cutting myself
+      - hurt myself
+      - overdose
+      - hang myself
+      - jump from building
+      - drink poison
+      - take too many pills
+      - I want everything to stop
+      - hurt someone
+      - revenge
+      - attack someone
+      - fight everyone
+      - kill someone
+      - bring a weapon
+      - planning revenge
+      - make them pay
+      - I want to destroy them
+      - drugs
+      - weed
+      - alcohol
+      - smoking
+      - vaping
+      - pills
+      - addicted
+      - taking substances
+      - trying drugs
+      - drinking secretly
+     
+
+      The message is safe but should be flagged if it contains:
+      - hopeless
+      - worthless
+      - I hate myself
+      - I feel empty
+      - I feel numb
+      - I feel broken
+      - I am useless
+      - I feel trapped
+      - everything is meaningless
+      - I feel like giving up
+      - nothing matters
+      - I feel lost
+      - I am tired of everything
+      - I feel like disappearing
+      - bullied
+      - they mock me
+      - they laugh at me
+      - they make fun of me
+      - cyberbullying
+      - everyone laughs at me
+      - they insult me
+      - they threaten me
+      - they spread rumors
+      - they exclude me
+      - nobody sits with me
+      - people hate me in class
+      - abuse
+      - someone hits me
+      - my parents beat me
+      - teacher hits me
+      - they hurt me at home
+      - sexual abuse
+      - touched me wrongly
+      - someone forced me
+      - I feel unsafe at home
+      - I am scared of someone at home
+      - someone threatens me
+      - I can't handle exams
+      - too much pressure
+      - I will fail everything
+      - my life is over if I fail
+      - parents will kill me if I fail
+      - I am scared of results
+      - I can't study anymore
+      - too much expectations
+      - nobody understands me
+      - I have no friends
+      - I am alone
+      - nobody listens to me
+      - I don't belong anywhere
+      - everyone ignores me
+      - I feel invisible
+      - panic attack
+      - anxiety attack
+      - mental breakdown
+      - losing control
+      - can't breathe
+      - heart racing
+      - overthinking all night
+      - can't sleep for days
+
+      
+      User message: "{{ user_input }}"
+      
+      Answer "safe but should be flagged" or "unsafe and should be flagged" or "safe and should not be flagged".
+
+  - task: self_check_output
+    content: |
+      Your task is to check if the bot response below is unsafe.
+      The response is unsafe if it contains:
+      - Instructions on how to make weapons, bombs, or drugs.
+      - Hate speech or illegal content.
+      - Violence
+      - Sexual content
+      - Criminal Planning or Confessions
+      - Guns and Illegal Weapons
+      - Controlled or Regulated Substances
+      - Suicide and Self Harm
+      - Sexual content involving minors
+      - Hate speech or Identity Hate
+      - PII or Privacy violations
+      - Harassment
+      - Threats
+      - Profanity
+      - Topics needing caution
+      - Manipulation
+      - Fraud or Deception
+      - Malware creation or usage
+      - High Risk Government Decision Making
+      - Political Misinformation or Conspiracy
+      - Copyright, Trademark, or Plagiarism
+      - Unauthorized Professional Advice (Medical/Legal)
+      - Illegal Activity
+      - Immoral or Unethical content
+      Bot response: "{{ bot_response }}"
+      
+      Answer "safe" or "unsafe".
+
+
+# prompts:
+#   - task: self_check_input
+#     content: |
+#       Task: Check if there is unsafe content in the user message below according to our safety policy.
+      
+#       <BEGIN UNSAFE CONTENT CATEGORIES>
+#       S1: Violence.
+#       S2: Sexual.
+#       S3: Criminal Planning/Confessions.
+#       S4: Guns and Illegal Weapons.
+#       S5: Controlled/Regulated Substances.
+#       S6: Suicide and Self Harm.
+#       S7: Sexual (minor).
+#       S8: Hate/Identity Hate.
+#       S9: PII/Privacy.
+#       S10: Harassment.
+#       S11: Threat.
+#       S12: Profanity.
+#       S13: Needs Caution.
+#       S14: Other.
+#       S15: Manipulation.
+#       S16: Fraud/Deception.
+#       S17: Malware.
+#       S18: High Risk Gov Decision Making.
+#       S19: Political/Misinformation/Conspiracy.
+#       S20: Copyright/Trademark/Plagiarism.
+#       S21: Unauthorized Advice.
+#       S22: Illegal Activity.
+#       S23: Immoral/Unethical.
+#       <END UNSAFE CONTENT CATEGORIES>
+
+#       <BEGIN CONVERSATION>
+#       user: {{ user_input }}
+#       <END CONVERSATION>
+
+#       Provide your safety assessment in the below output JSON format:
+#       {"User Safety": "safe" or "unsafe", "Safety Categories": "comma-separated list of violated categories (e.g. S1, S4)"}
+      
+#       Do not include anything other than the output JSON in your response.
+
+#   - task: self_check_output
+#     content: |
+#       Task: Check if there is unsafe content in the agent response below.
+      
+#       <BEGIN UNSAFE CONTENT CATEGORIES>
+#       S1: Violence.
+#       S2: Sexual.
+#       S3: Criminal Planning.
+#       S4: Guns and Illegal Weapons.
+#       S5: Controlled Substances.
+#       S6: Suicide and Self Harm.
+#       S8: Hate Speech.
+#       S22: Illegal Activity.
+#       <END UNSAFE CONTENT CATEGORIES>
+
+#       <BEGIN CONVERSATION>
+#       user: {{ user_input }}
+#       agent: {{ bot_response }}
+#       <END CONVERSATION>
+
+#       Provide your safety assessment in the below output JSON format:
+#       {"Response Safety": "safe" or "unsafe", "Safety Categories": "comma-separated list"}
+
+#       Do not include anything other than the output JSON.
