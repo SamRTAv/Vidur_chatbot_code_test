@@ -1,7 +1,35 @@
 import json
-
+import os
+from pymongo import MongoClient
 # file_name = 'chat_history.jsonl'
 # collection = ""
+
+
+
+def extract_dossier(user_id):
+    CONNECTION_STRING = os.getenv("CONNECTION_STRING")
+    DB_NAME = os.getenv("DB_NAME")
+    COLLECTION_NAME = "userwellbeingdossiers"
+    try:
+        # Connect with certifi to avoid SSL errors
+        client = MongoClient(CONNECTION_STRING)
+        db = client[DB_NAME]
+        collection =  db[COLLECTION_NAME]
+    except Exception as e:
+        print(f"Error connecting to Mongo: {e}")
+        return None
+    
+    if collection is None:
+        return "collection not found"
+    
+    cursor = collection.find({"user_id": user_id}).sort("updated_at", -1).limit(1)
+
+    last_doc = list(cursor)
+    if not last_doc:
+        return "dossier not found"
+
+    return last_doc[0]
+
 
 def extract_chats(collection,user_id,limit):
     
