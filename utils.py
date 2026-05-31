@@ -1093,7 +1093,7 @@ def get_rag_response(question, qa_chains, retrievers_dict):
         Input Question: {question}
     """
 )
-    return final_answer
+    return final_answer.content
 
 
 

@@ -282,8 +282,8 @@ class ChatResponse(BaseModel):
     resources: List[ResourceItem]
 
 
-PERPLEXITY_API_KEY = os.getenv("PERPLEXITY_API_KEY")
-client = Perplexity(api_key=PERPLEXITY_API_KEY)
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+client = Groq(api_key=GROQ_API_KEY)
 collection = get_mongo_collection()
 
 print("Initializing knowledge base...")
