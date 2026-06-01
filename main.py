@@ -378,7 +378,7 @@ async def chat_endpoint(request: ChatRequest):
             # context_response = withrag_context_response.format(username=username,user_input=user_input,rag_response=rag_response,mode=mode,chat_history_str=chat_history_str,ncon=ncon)
         
 
-        messages = [{"role": "system", "content": SYSTEM_PROMPT.replace("{rag_response}", llm_decision)},
+        messages = [{"role": "system", "content": SYSTEM_PROMPT.replace("{rag_response}", llm_decision).replace("{recent_chat_history}", chat_history_str)},
                     {"role": "user", "content": user_input}
                     ]
 
@@ -440,6 +440,7 @@ async def chat_endpoint(request: ChatRequest):
         response_text = str(input_check.response)
         if "[[GUARDRAIL_BLOCK_TRIGGERED]]" in response_text:
             print("[GUARD] Input Blocked!")
+
 
             return ChatResponse(
                     response="I am sorry but I cannot answer that request.",
